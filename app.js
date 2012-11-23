@@ -5,7 +5,8 @@
 
 var express = require('express'),
   routes = require('./routes'),
-  socket = require('./routes/socket.js');
+  socket = require('./routes/socket.js'),
+  lessMiddleware = require('less-middleware');
 
 var app = module.exports = express();
 var server = require('http').createServer(app);
@@ -20,6 +21,11 @@ app.configure(function(){
   app.set('view engine', 'jade');
   app.use(express.bodyParser());
   app.use(express.methodOverride());
+  //app.use(express.compiler({ src: __dirname + '/public', enable: ['less']}));
+  app.use(lessMiddleware({
+    src: __dirname + '/public',
+    compress: true
+  }));
   app.use(express.static(__dirname + '/public'));
   app.use(app.router);
 });
